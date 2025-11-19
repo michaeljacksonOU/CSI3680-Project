@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import webbrowser
+from summary import Summary
 
 def main():
     # Load environment variables
@@ -24,13 +25,17 @@ def main():
         ]
     )
 
+    mySummary = Summary(response.choices[0].message.content)
     summary = response.choices[0].message.content
     print("\n--- File Summary ---\n")
     print(summary)
     print("\n--------------------\n")
 
-def display_in_browser(summary):
-    html_content = f"<html><body><h1>File Summary</h1><p>{summary}</p></body></html>"
+    # Display summary in web browser
+    display_in_browser(mySummary)
+
+def display_in_browser(mySummary):
+    html_content = f"<html><body><h1>File Summary</h1><p>{mySummary.summary}</p><br><h1>Key Words</h1><p>{mySummary.key_words()}</p></body></html>"
     with open("summary.html", "w", encoding="utf-8") as f:
         f.write(html_content)
     webbrowser.open("summary.html")
