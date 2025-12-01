@@ -48,7 +48,175 @@ def main():
     input("\nPress Enter to close...")
 
 def display_in_browser(mySummary):
-    html_content = f"<html><body><h1>File Summary</h1><p>{mySummary.summary}</p><br><h1>Key Words</h1><p>{mySummary.key_words()}</p></body></html>"
+    keywords = mySummary.key_words()
+    keyword_tags = ''.join([f'<span class="keyword-tag">{word}</span>' for word in keywords])
+    
+    html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summary</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }}
+        
+        .container {{
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }}
+        
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }}
+        
+        .header h1 {{
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }}
+        
+        .header p {{
+            font-size: 1.1em;
+            opacity: 0.9;
+        }}
+        
+        .content {{
+            padding: 40px;
+        }}
+        
+        .section {{
+            margin-bottom: 40px;
+        }}
+        
+        .section:last-child {{
+            margin-bottom: 0;
+        }}
+        
+        .section-title {{
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }}
+        
+        .summary-text {{
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.8;
+            text-align: justify;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }}
+        
+        .keywords-container {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }}
+        
+        .keyword-tag {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+        }}
+        
+        .keyword-tag:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+        }}
+        
+        .footer {{
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }}
+        
+        @media (max-width: 768px) {{
+            body {{
+                padding: 20px 10px;
+            }}
+            
+            .header h1 {{
+                font-size: 2em;
+            }}
+            
+            .content {{
+                padding: 30px 20px;
+            }}
+            
+            .section-title {{
+                font-size: 1.5em;
+            }}
+            
+            .summary-text {{
+                font-size: 1em;
+                padding: 20px;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 Text Summary</h1>
+            <p>AI-Powered Content Analysis</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">Summary</h2>
+                <div class="summary-text">
+                    {mySummary.summary}
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Key Words</h2>
+                <div class="keywords-container">
+                    {keyword_tags}
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Generated with OpenAI GPT-4o
+        </div>
+    </div>
+</body>
+</html>"""
+    
     with open("summary.html", "w", encoding="utf-8") as f:
         f.write(html_content)
     webbrowser.open("summary.html")
