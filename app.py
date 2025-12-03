@@ -211,7 +211,7 @@ def display_in_browser(mySummary):
         </div>
         
         <div class="footer">
-            Generated with OpenAI GPT-4o
+            Summary Generated with OpenAI GPT-4
         </div>
     </div>
 </body>
