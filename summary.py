@@ -2,6 +2,7 @@ class Summary:
     def __init__(self, summary: str, header: str = "File Summary"):
         self.summary = summary
         self.header = header
+        self.key_words = self.key_words()
 
     # Select the 10 most common words from the summary not including articles, prepositions, or conjunctions
     def key_words(self):

@@ -48,7 +48,7 @@ def main():
     input("\nPress Enter to close...")
 
 def display_in_browser(mySummary):
-    keywords = mySummary.key_words()
+    keywords = mySummary.key_words
     keyword_tags = ''.join([f'<span class="keyword-tag">{word}</span>' for word in keywords])
     
     html_content = f"""<!DOCTYPE html>
