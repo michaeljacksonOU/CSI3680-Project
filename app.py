@@ -4,13 +4,30 @@ import os
 from openai import OpenAI
 import webbrowser
 from summary import Summary
+from tkinter import *
+import customtkinter
 
-def main():
+
+customtkinter.set_appearance_mode("System")
+customtkinter.set_default_color_theme("green")
+root = customtkinter.CTk()
+def get_detail_level():
+    input_box = customtkinter.CTkInputDialog(text=" Welcome to our AI Text Summarizer.\n\n" \
+    "This application will utilize GPT-4o to summarize text you upload to it.\n\n" \
+    "You have two simple steps to follow:\n\n" \
+    "1. Select how detailed of a response you want.\n 2. Select a .txt file that you would like summarized.\n\n" \
+    "Your Response is then hosted at 127.0.0.1:5500/summary.html.\n\n " \
+    "When you are ready, you may proceed with step 1!\n\n" \
+    "      Enter level of detail (1 - high, 2 - medium, 3 - low):", title="AI Text Summarizer")
+    return int(input_box.get_input())
+
+
+def main(detail_level_response):
     # Load environment variables
     level_of_detail_dict = {1 : "high detail",
                        2 : "medium detail",
                        3 : "low detail"}
-
+    level_of_detail = level_of_detail_dict.get(detail_level_response)
     load_dotenv()
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -18,8 +35,10 @@ def main():
 
     file_path = choose_file()
 
-    response = int(input("Enter level of detail (1 - high, 2 - medium, 3 - low): "))
+    # response = int(input("Enter level of detail (1 - high, 2 - medium, 3 - low): ")
+    global response
     level_of_detail = level_of_detail_dict.get(response)
+    print(level_of_detail)
 
     # Read file contents
     with open(file_path, "r", encoding="utf-8") as f:
@@ -228,4 +247,6 @@ def choose_file():
     
 
 if __name__ == "__main__":
-    main()
+    # root.mainloop()
+    response = get_detail_level()
+    main(response)
