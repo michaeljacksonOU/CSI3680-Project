@@ -1,3 +1,4 @@
+import sys
 from tkinter import filedialog
 from dotenv import load_dotenv
 import os
@@ -19,7 +20,12 @@ def get_detail_level():
     "Your Response is then hosted at 127.0.0.1:5500/summary.html.\n\n " \
     "When you are ready, you may proceed with step 1!\n\n" \
     "      Enter level of detail (1 - high, 2 - medium, 3 - low):", title="AI Text Summarizer")
-    return int(input_box.get_input())
+    try:
+        if int(input_box.get_input()) not in [1, 2, 3]:
+            raise ValueError
+    except (ValueError, TypeError):
+        error_box = customtkinter.CTkInputDialog(text="Invalid input. Please enter 1, 2, or 3 for the level of detail.", title="Error")
+        sys.exit()
 
 
 def main(detail_level_response):
@@ -242,9 +248,15 @@ def display_in_browser(mySummary):
 
 def choose_file():
     # Pick file to summarize from a file picker
-    file = filedialog.askopenfilename(title="Select file to summarize", filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
-    return file
-    
+    try:
+        file = filedialog.askopenfilename(title="Select file to summarize", filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
+        if not file:
+            raise Exception("No file selected")
+        else:
+            return file
+    except Exception:
+        print(f"Application was canceled")
+        sys.exit()
 
 if __name__ == "__main__":
     # root.mainloop()
